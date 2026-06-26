@@ -3,7 +3,8 @@ import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 const AdminProducts = () => {
-  const { user } = useContext(AuthContext);
+  useContext(AuthContext); // FIX: removed unused user
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ const AdminProducts = () => {
               <th style={thStyle}>ACTIONS</th>
             </tr>
           </thead>
+
           <tbody>
             {products.map(product => (
               <tr key={product._id} style={rowStyle}>
@@ -73,12 +75,17 @@ const AdminProducts = () => {
                 <td style={tdStyle}>{product.category}</td>
                 <td style={tdStyle}>{product.stock}</td>
                 <td style={tdStyle}>
-                  <Link to={`/admin/edit-product/${product._id}`} style={editBtn}>Edit</Link>
-                  <button onClick={() => handleDelete(product._id)} style={deleteBtn}>Delete</button>
+                  <Link to={`/admin/edit-product/${product._id}`} style={editBtn}>
+                    Edit
+                  </Link>
+                  <button onClick={() => handleDelete(product._id)} style={deleteBtn}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
     </div>
