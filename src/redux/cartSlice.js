@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Load initial state from localStorage
+
 const loadCartFromLocalStorage = () => {
   try {
     const savedCart = localStorage.getItem('cartItems');
@@ -31,7 +31,7 @@ const cartSlice = createSlice({
         state.cartItems.push(newItem);
       }
 
-      // Save to localStorage whenever cart changes
+      
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
 
@@ -40,14 +40,14 @@ const cartSlice = createSlice({
         (item) => item.productId !== action.payload
       );
 
-      // Save to localStorage whenever cart changes
+      
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
 
     clearCart: (state) => {
       state.cartItems = [];
 
-      // Save to localStorage whenever cart changes
+      
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
 
@@ -58,7 +58,7 @@ const cartSlice = createSlice({
         item.qty = qty;
       }
 
-      // Save to localStorage whenever cart changes
+      
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
   },

@@ -24,7 +24,7 @@ const Checkout = () => {
     return null;
   }
 
-  // ✅ ADD TIMEOUT FUNCTION
+  
   const fetchWithTimeout = (url, options = {}, timeout = 15000) => {
     return Promise.race([
       fetch(url, options),
@@ -52,7 +52,7 @@ const Checkout = () => {
     try {
       console.log('Step 1: Creating Razorpay order...');
       
-      // ✅ WITH TIMEOUT
+      
       const orderRes = await fetchWithTimeout(
         `${BACKEND_URL}/payment/order`,
         {
@@ -60,7 +60,7 @@ const Checkout = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount: totalAmount })
         },
-        15000  // 15 second timeout
+        15000  
       );
 
       if (!orderRes.ok) {
@@ -81,7 +81,7 @@ const Checkout = () => {
           try {
             console.log('Step 3: Verifying payment...');
             
-            // ✅ WITH TIMEOUT
+            
             const verifyRes = await fetchWithTimeout(
               `${BACKEND_URL}/payment/verify`,
               {
@@ -102,7 +102,7 @@ const Checkout = () => {
 
             console.log('Step 4: Saving order to database...');
             
-            // ✅ WITH TIMEOUT
+            
             const saveRes = await fetchWithTimeout(
               `${BACKEND_URL}/order`,
               {

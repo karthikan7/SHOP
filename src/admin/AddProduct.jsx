@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const AddProduct = () => {
   const navigate = useNavigate();
 
-  const { user } = useContext(AuthContext); // FIX ADDED
+  const { user } = useContext(AuthContext); 
 
   const [formData, setFormData] = useState({
     name: '', description: '', price: '', category: '', stock: ''
