@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -21,30 +21,52 @@ import EditProduct from './admin/EditProduct';
 import AdminOrders from './admin/AdminOrders';
 import AdminUsers from './admin/AdminUsers';
 
+const PrivateRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  return user ? children : <Navigate to="/login" replace />;
+};
+
+const AdminRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== 'admin') return <Navigate to="/" replace />;
+  return children;
+};
+
 function App() {
   return (
     <Router>
       <Navbar />
       <div className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Shop />} />
+
+          {/* Public Routes */}
+          <Route path="/"            element={<Home />} />
+          <Route path="/shop"        element={<Shop />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/ordersuccess" element={<OrderSuccess />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/disclaimer" element={<Disclaimer />} />
-          <Route path="/return" element={<ReturnPolicy />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/add-product" element={<AddProduct />} />
-          <Route path="/admin/products" element={<AdminProducts />} />
-          <Route path="/admin/edit-product/:id" element={<EditProduct />} />
-          <Route path="/admin/orders" element={<AdminOrders />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/cart"        element={<Cart />} />
+          <Route path="/login"       element={<Login />} />
+          <Route path="/register"    element={<Register />} />
+          <Route path="/about"       element={<About />} />
+          <Route path="/disclaimer"  element={<Disclaimer />} />
+          <Route path="/return"      element={<ReturnPolicy />} />
+
+          {/* Private Routes */}
+          <Route path="/checkout"     element={<PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route path="/profile"      element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/ordersuccess" element={<PrivateRoute><OrderSuccess /></PrivateRoute>} />
+
+          {/* Admin Routes */}
+          <Route path="/admin"                  element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/add-product"      element={<AdminRoute><AddProduct /></AdminRoute>} />
+          <Route path="/admin/products"         element={<AdminRoute><AdminProducts /></AdminRoute>} />
+          <Route path="/admin/edit-product/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
+          <Route path="/admin/orders"           element={<AdminRoute><AdminOrders /></AdminRoute>} />
+          <Route path="/admin/users"            element={<AdminRoute><AdminUsers /></AdminRoute>} />
+
+          {/* 404 */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
       </div>
       <Footer />
